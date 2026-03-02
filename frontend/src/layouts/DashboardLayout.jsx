@@ -1,17 +1,34 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 
 export default function DashboardLayout({ children }) {
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-sky-50 via-white to-indigo-50">
-      <Sidebar />
-      <div className="relative min-w-0 flex-1 overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-24 right-10 h-72 w-72 rounded-full bg-sky-200/35 blur-3xl" />
-          <div className="absolute top-40 left-20 h-72 w-72 rounded-full bg-indigo-200/30 blur-3xl" />
+    <div className="min-h-screen bg-slate-50">
+      <div className="flex min-h-screen">
+        <Sidebar
+          collapsed={collapsed}
+          setCollapsed={setCollapsed}
+          mobileOpen={mobileOpen}
+          setMobileOpen={setMobileOpen}
+        />
+
+        <div className="min-w-0 flex-1 bg-slate-50">
+          <Topbar setMobileOpen={setMobileOpen} />
+
+          <motion.main
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="p-6 md:p-8"
+          >
+            {children}
+          </motion.main>
         </div>
-        <Topbar />
-        <main className="relative z-10 p-6">{children}</main>
       </div>
     </div>
   );
