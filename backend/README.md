@@ -10,6 +10,33 @@ npm run dev
 
 API base: `http://localhost:4000/api`
 
+## Deployment (Render + Vercel)
+
+### Render backend env
+Use these environment variables in Render:
+```env
+PORT=10000
+CORS_ORIGIN=http://localhost:5173,https://vertex-school-d4z25y2ti-chandangirish95-5672s-projects.vercel.app
+JWT_SECRET=<strong-random-secret>
+JWT_EXPIRES_IN=7d
+DB_HOST=<render-mysql-host-or-external-host>
+DB_PORT=3306
+DB_USER=<db-user>
+DB_PASSWORD=<db-password>
+DB_NAME=<db-name>
+DB_SYNC=false
+UPLOAD_DIR=uploads
+```
+
+Backend URL:
+`https://vertex-school.onrender.com`
+
+Health checks:
+```bash
+curl -s https://vertex-school.onrender.com/api/health
+curl -s https://vertex-school.onrender.com/health
+```
+
 ## Migration Strategy
 Project supports `sequelize.sync()` in dev (`DB_SYNC=true`) and SQL migration scripts.
 

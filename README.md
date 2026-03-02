@@ -40,6 +40,38 @@ npm run dev
 
 Open: http://localhost:5173
 
+## Production Setup (Vercel + Render)
+
+### Frontend (Vercel)
+Set in Vercel project env:
+```env
+VITE_API_URL=https://vertex-school.onrender.com/api
+```
+
+Frontend URL:
+`https://vertex-school-d4z25y2ti-chandangirish95-5672s-projects.vercel.app`
+
+SPA rewrite file is included at:
+`/Users/chandangirish/Downloads/vertex-school-manager/frontend/vercel.json`
+
+### Backend (Render)
+Set in Render service env:
+```env
+CORS_ORIGIN=http://localhost:5173,https://vertex-school-d4z25y2ti-chandangirish95-5672s-projects.vercel.app
+DB_SYNC=false
+```
+
+Backend URL:
+`https://vertex-school.onrender.com`
+
+### Production quick tests
+```bash
+curl -s https://vertex-school.onrender.com/api/health
+curl -X POST https://vertex-school.onrender.com/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@vertexschool.local","password":"Admin@12345"}'
+```
+
 ## Demo Logins (seed)
 - Admin: `admin@vertexschool.local` / `Admin@12345`
 - Teacher: `teacher@vertexschool.local` / `Teacher@12345`
