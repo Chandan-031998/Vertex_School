@@ -16,7 +16,7 @@ API base: `http://localhost:4000/api`
 Use these environment variables in Render:
 ```env
 PORT=10000
-CORS_ORIGIN=http://localhost:5173,https://vertex-school-d4z25y2ti-chandangirish95-5672s-projects.vercel.app
+CORS_ORIGIN=http://localhost:5173,https://vertex-school-d4z25y2ti-chandangirish95-5672s-projects.vercel.app,https://schoolerp.vertexsoftware.in,https://*.vercel.app,https://*.vertexsoftware.in
 JWT_SECRET=<strong-random-secret>
 JWT_EXPIRES_IN=7d
 DB_HOST=<render-mysql-host-or-external-host>

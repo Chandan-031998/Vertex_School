@@ -17,10 +17,32 @@ const configuredOrigins = String(env.CORS_ORIGIN || "")
   .map((v) => v.trim())
   .filter(Boolean);
 
+function normalizeOrigin(value) {
+  return String(value || "").replace(/\/+$/, "");
+}
+
+function wildcardToRegex(pattern) {
+  const escaped = pattern.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*");
+  return new RegExp(`^${escaped}$`);
+}
+
+function matchesConfiguredOrigin(origin) {
+  const normalizedOrigin = normalizeOrigin(origin);
+  return configuredOrigins.some((allowed) => {
+    const normalizedAllowed = normalizeOrigin(allowed);
+    if (!normalizedAllowed) return false;
+    if (normalizedAllowed === normalizedOrigin) return true;
+    if (normalizedAllowed.includes("*")) {
+      return wildcardToRegex(normalizedAllowed).test(normalizedOrigin);
+    }
+    return false;
+  });
+}
+
 function isAllowedOrigin(origin) {
   if (!origin) return true; // curl/postman/mobile apps
-  if (configuredOrigins.includes(origin)) return true;
-  // Optional safe wildcard for Vercel previews
+  if (matchesConfiguredOrigin(origin)) return true;
+  // Optional safe wildcard for Vercel previews (backward-compatible default)
   if (/^https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/.test(origin)) return true;
   return false;
 }

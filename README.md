@@ -57,7 +57,7 @@ SPA rewrite file is included at:
 ### Backend (Render)
 Set in Render service env:
 ```env
-CORS_ORIGIN=http://localhost:5173,https://vertex-school-d4z25y2ti-chandangirish95-5672s-projects.vercel.app
+CORS_ORIGIN=http://localhost:5173,https://vertex-school-d4z25y2ti-chandangirish95-5672s-projects.vercel.app,https://schoolerp.vertexsoftware.in,https://*.vercel.app,https://*.vertexsoftware.in
 DB_SYNC=false
 ```
 
