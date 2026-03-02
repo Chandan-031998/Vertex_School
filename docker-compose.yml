@@ -1,0 +1,48 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: vertex_school_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: vertex_school_manager
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+
+  backend:
+    build: ./backend
+    container_name: vertex_school_backend
+    depends_on:
+      - db
+    environment:
+      PORT: 4000
+      CORS_ORIGIN: http://localhost:5173
+      JWT_SECRET: replace_me
+      JWT_EXPIRES_IN: 7d
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: vertex_school_manager
+      DB_USER: root
+      DB_PASSWORD: rootpassword
+      DB_SYNC: "true"
+      UPLOAD_DIR: uploads
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend/uploads:/app/uploads
+
+  frontend:
+    build: ./frontend
+    container_name: vertex_school_frontend
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: http://localhost:4000/api
+    ports:
+      - "5173:5173"
+
+volumes:
+  db_data:

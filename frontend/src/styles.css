@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-primary: #3030c8;
+  --brand-secondary: #2626b6;
+  --brand-soft: rgba(48, 48, 200, 0.12);
+}
+
+.btn-primary-theme {
+  background-image: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+.btn-primary-theme:hover {
+  filter: brightness(0.97);
+}
