@@ -70,8 +70,12 @@ app.use(rateLimit({ windowMs: 60 * 1000, max: 300 }));
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
+const uploadsRoot = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME
+  ? path.join(require("os").tmpdir(), env.UPLOAD_DIR)
+  : path.join(process.cwd(), env.UPLOAD_DIR);
+
 // Serve uploads
-app.use("/uploads", express.static(path.join(process.cwd(), env.UPLOAD_DIR)));
+app.use("/uploads", express.static(uploadsRoot));
 
 app.use((req, res, next) => {
   const tenantResolver = require("./middleware/tenant");
