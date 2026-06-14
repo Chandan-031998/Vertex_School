@@ -2,21 +2,42 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
+  BadgeIndianRupee,
   Bell,
+  BellRing,
   BookOpen,
+  BookOpenCheck,
+  BriefcaseBusiness,
   Bus,
+  BusFront,
   CalendarDays,
+  ChartNoAxesCombined,
+  ClipboardCheck,
+  Clock3,
+  ContactRound,
   CreditCard,
   FileBarChart2,
   Flag,
   Gauge,
+  GitBranch,
   GraduationCap,
   LayoutDashboard,
+  Mail,
+  MapPinned,
   Menu,
+  MessageSquareWarning,
+  NotebookTabs,
+  RadioTower,
+  ReceiptIndianRupee,
   Route,
   Settings,
   Shield,
+  SlidersHorizontal,
   Users,
+  UsersRound,
+  UserRoundCheck,
+  UserRoundCog,
+  UserRoundPlus,
   UserSquare2,
   X
 } from "lucide-react";
@@ -25,25 +46,43 @@ import { getStoredBranding, resolveBrandingAssetUrl } from "../utils/branding";
 
 const iconByLabel = {
   Dashboard: LayoutDashboard,
-  Reports: FileBarChart2,
-  Admissions: GraduationCap,
-  Students: Users,
-  Attendance: CalendarDays,
-  Timetable: CalendarDays,
-  "Fees & Billing": CreditCard,
-  Staff: UserSquare2,
-  Parents: Users,
-  "Assign Classes": BookOpen,
-  Notifications: Bell,
-  Vehicles: Bus,
-  "Routes & Stops": Route,
-  "Drivers & Attendants": Users,
-  Assignments: Shield,
-  "Student Allocation": Users,
-  "Trips / Live Status": Gauge,
-  Requests: Flag,
+  Reports: ChartNoAxesCombined,
+  Admissions: UserRoundPlus,
+  Students: GraduationCap,
+  Attendance: ClipboardCheck,
+  Timetable: Clock3,
+  "Fees & Billing": ReceiptIndianRupee,
+  Staff: BriefcaseBusiness,
+  Parents: UsersRound,
+  "Assign Classes": BookOpenCheck,
+  Notifications: BellRing,
+  Vehicles: BusFront,
+  "Routes & Stops": MapPinned,
+  "Drivers & Attendants": ContactRound,
+  Assignments: GitBranch,
+  "Student Allocation": UserRoundCheck,
+  "Trips / Live Status": RadioTower,
+  Requests: MessageSquareWarning,
   "Transport Notifications": Bell,
-  Settings
+  Settings: SlidersHorizontal,
+  Homework: NotebookTabs,
+  Exams: FileBarChart2,
+  Messages: Mail,
+  Profile: UserRoundCog,
+  Invoices: CreditCard,
+  "Pending Dues": BadgeIndianRupee,
+  "Fee Reminders": BellRing,
+  "My Children": Users,
+  Fees: ReceiptIndianRupee,
+  Transport: Bus,
+  "Teacher Panel": BookOpen,
+  Security: Shield,
+  "Live Status": Gauge,
+  Calendar: CalendarDays,
+  Routes: Route,
+  Account: UserSquare2,
+  General: Settings,
+  Flags: Flag
 };
 
 const menus = {
@@ -104,12 +143,12 @@ function SidebarContent({ collapsed, setCollapsed, setMobileOpen }) {
             ) : (
               <BrandMark />
             )}
-            {!collapsed ? (
-              <div className="min-w-0">
-                <div className="truncate text-lg font-extrabold text-slate-800">{branding.product_name || "Vertex"}</div>
-                <div className="text-xs text-slate-500">School Manager</div>
+            <div className={`min-w-0 ${collapsed ? "lg:hidden" : ""}`}>
+              <div className="truncate text-lg font-extrabold text-slate-800">
+                {branding.product_name || "Vertex"}
               </div>
-            ) : null}
+              <div className="text-xs text-slate-500">School Manager</div>
+            </div>
           </div>
           <button
             type="button"
@@ -133,27 +172,45 @@ function SidebarContent({ collapsed, setCollapsed, setMobileOpen }) {
       <nav className="flex-1 space-y-4 overflow-y-auto px-3 py-4">
         {menuGroups.map((group) => (
           <div key={group.group} className="space-y-1">
-            {!collapsed ? <div className="px-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">{group.group}</div> : null}
+            <div
+              className={`px-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500 ${
+                collapsed ? "lg:hidden" : ""
+              }`}
+            >
+              {group.group}
+            </div>
             {group.items.map((m) => {
               const Icon = iconByLabel[m.label] || BookOpen;
+              const isRootDashboard = ["/admin", "/teacher", "/accountant"].includes(m.to);
               const active =
                 loc.pathname === m.to ||
-                loc.pathname.startsWith(`${m.to}/`) ||
+                (!isRootDashboard && loc.pathname.startsWith(`${m.to}/`)) ||
                 (m.to === "/admin/settings" && loc.pathname.startsWith("/admin/settings"));
 
               return (
                 <Link
                   key={m.to}
                   to={m.to}
+                  onClick={() => setMobileOpen(false)}
                   title={collapsed ? m.label : undefined}
-                  className={`flex items-center ${collapsed ? "justify-center" : "justify-start"} gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out ${
-                    active ? "bg-indigo-50 text-indigo-600" : "text-slate-800 hover:bg-slate-100"
+                  className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-200 ${
+                    collapsed ? "lg:justify-center" : "lg:justify-start"
+                  } ${
+                    active
+                      ? "bg-gradient-to-r from-indigo-50 to-cyan-50 text-indigo-700 shadow-sm ring-1 ring-indigo-100"
+                      : "text-slate-700 hover:bg-slate-100 hover:text-slate-950"
                   }`}
                 >
-                  <span className={`grid h-8 w-8 place-items-center rounded-full ${active ? "bg-indigo-100 text-indigo-600" : "bg-slate-100 text-slate-500"}`}>
-                    <Icon size={16} />
+                  <span
+                    className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl transition ${
+                      active
+                        ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20"
+                        : "bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-indigo-600 group-hover:shadow-sm"
+                    }`}
+                  >
+                    <Icon size={18} strokeWidth={2} />
                   </span>
-                  {!collapsed ? <span className="truncate">{m.label}</span> : null}
+                  <span className={`truncate ${collapsed ? "lg:hidden" : "lg:inline"}`}>{m.label}</span>
                 </Link>
               );
             })}
@@ -163,13 +220,12 @@ function SidebarContent({ collapsed, setCollapsed, setMobileOpen }) {
 
       <div className="px-3 pb-4">
         <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-500">
-          {!collapsed ? (
-            <>
+          <span className={collapsed ? "lg:hidden" : ""}>
               Signed in as <span className="font-semibold text-slate-800">{user?.role}</span>
-            </>
-          ) : (
-            <span className="grid place-items-center font-semibold text-slate-800">{user?.role?.slice(0, 2) || "--"}</span>
-          )}
+          </span>
+          <span className={`place-items-center font-semibold text-slate-800 ${collapsed ? "hidden lg:grid" : "hidden"}`}>
+            {user?.role?.slice(0, 2) || "--"}
+          </span>
         </div>
       </div>
     </div>
@@ -179,17 +235,32 @@ function SidebarContent({ collapsed, setCollapsed, setMobileOpen }) {
 export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) {
   return (
     <>
-      {mobileOpen ? <div className="fixed inset-0 z-30 bg-slate-900/25 lg:hidden" onClick={() => setMobileOpen(false)} /> : null}
+      {mobileOpen ? (
+        <motion.button
+          type="button"
+          aria-label="Close navigation"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-30 cursor-default bg-slate-950/45 backdrop-blur-sm lg:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      ) : null}
 
       <motion.aside
         initial={false}
-        animate={{ width: collapsed ? 88 : 288 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-        className={`fixed inset-y-0 left-0 z-40 border-r border-slate-200 bg-white transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
+        layout
+        className={`fixed inset-y-0 left-0 z-40 w-[min(88vw,304px)] border-r border-slate-200 bg-white shadow-2xl transition-[transform,width] duration-300 ease-out lg:static lg:translate-x-0 lg:shadow-none ${
+          collapsed ? "lg:w-[88px]" : "lg:w-72"
+        } ${
           mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        <SidebarContent collapsed={collapsed} setCollapsed={setCollapsed} setMobileOpen={setMobileOpen} />
+        <SidebarContent
+          collapsed={collapsed}
+          setCollapsed={setCollapsed}
+          setMobileOpen={setMobileOpen}
+        />
       </motion.aside>
     </>
   );

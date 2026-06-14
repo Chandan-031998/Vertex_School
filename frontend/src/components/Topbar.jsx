@@ -21,14 +21,8 @@ export default function Topbar({ setMobileOpen }) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-20 bg-slate-50 px-4 py-4 md:px-8">
-      <div className="mb-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 px-6 py-5 text-white shadow-lg">
-        <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Control Center</div>
-        <div className="mt-1 text-xl font-extrabold md:text-2xl">Welcome back, {user?.full_name || "Team"}</div>
-        <p className="mt-1 text-sm text-white/90">Track attendance, fees, and academics from one clean EdTech dashboard.</p>
-      </div>
-
-      <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/90 px-4 py-3 backdrop-blur-xl md:px-8">
+      <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -38,8 +32,11 @@ export default function Topbar({ setMobileOpen }) {
           >
             <Menu size={18} />
           </button>
-          <div className="text-sm text-slate-500">
-            Signed in as <span className="font-semibold text-slate-800">{user?.role}</span>
+          <div>
+            <div className="text-sm font-bold text-slate-900">School Control Center</div>
+            <div className="hidden text-xs text-slate-500 sm:block">
+              Signed in as {user?.role}
+            </div>
           </div>
         </div>
 
@@ -63,7 +60,10 @@ export default function Topbar({ setMobileOpen }) {
                 {(user?.full_name || "U").slice(0, 1).toUpperCase()}
               </span>
               <span className="hidden sm:inline">{user?.full_name || "User"}</span>
-              <ChevronDown size={14} />
+              <ChevronDown
+                size={14}
+                className={`transition-transform ${profileOpen ? "rotate-180" : ""}`}
+              />
             </button>
 
             <AnimatePresence>

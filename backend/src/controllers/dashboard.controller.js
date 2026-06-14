@@ -22,8 +22,8 @@ async function adminDashboard(req, res) {
     pending += due > 0 ? due : 0;
   }
 
-  // Attendance overview last 7 days
-  const since = new Date(Date.now() - 7*24*3600*1000);
+  // Keep enough history for the dashboard's 7/14/30 day controls.
+  const since = new Date(Date.now() - 30*24*3600*1000);
   const att = await Attendance.findAll({
     attributes: ["date", [fn("SUM", literal("status='P'")), "present"], [fn("COUNT", col("id")), "total"]],
     where: { tenant_id, date: { [Op.gte]: since } },
