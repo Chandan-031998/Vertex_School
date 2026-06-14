@@ -1,4 +1,4 @@
-import api from "./http";
+import api, { API_BASE_URL } from "./http";
 export async function listFeeStructures() {
   const { data } = await api.get("/fees/structures");
   return data;
@@ -49,5 +49,5 @@ export async function deletePayment(paymentId) {
 }
 export function exportFeeCsv(params) {
   const q = new URLSearchParams(params).toString();
-  return `${import.meta.env.VITE_API_URL}/fees/reports/export?${q}`;
+  return `${API_BASE_URL}/fees/reports/export?${q}`;
 }

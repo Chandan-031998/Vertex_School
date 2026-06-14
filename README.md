@@ -40,12 +40,12 @@ npm run dev
 
 Open: http://localhost:5173
 
-## Production Setup (Vercel + Render)
+## Production Setup (Vercel)
 
 ### Frontend (Vercel)
 Set in Vercel project env:
 ```env
-VITE_API_URL=https://vertex-school.onrender.com/api
+VITE_API_URL=https://vertex-school-oleu.vercel.app/api
 ```
 
 Frontend URL:
@@ -54,20 +54,24 @@ Frontend URL:
 SPA rewrite file is included at:
 `/Users/chandangirish/Downloads/vertex-school-manager/frontend/vercel.json`
 
-### Backend (Render)
-Set in Render service env:
+### Backend (Vercel)
+Deploy the `backend` directory as a Vercel project and configure:
 ```env
 CORS_ORIGIN=http://localhost:5173,https://vertex-school-d4z25y2ti-chandangirish95-5672s-projects.vercel.app,https://schoolerp.vertexsoftware.in,https://*.vercel.app,https://*.vertexsoftware.in
 DB_SYNC=false
 ```
 
 Backend URL:
-`https://vertex-school.onrender.com`
+`https://vertex-school-oleu.vercel.app`
+
+The serverless entrypoint and routing configuration are:
+- `backend/api/index.js`
+- `backend/vercel.json`
 
 ### Production quick tests
 ```bash
-curl -s https://vertex-school.onrender.com/api/health
-curl -X POST https://vertex-school.onrender.com/api/auth/login \
+curl -s https://vertex-school-oleu.vercel.app/api/health
+curl -X POST https://vertex-school-oleu.vercel.app/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@vertexschool.local","password":"Admin@12345"}'
 ```
@@ -92,3 +96,14 @@ Services:
 - Frontend: 5173
 
 # Vertex_School
+
+
+
+git add .
+git commit -m "New Phase 10 gitignore"
+
+git push
+
+
+
+VITE_API_URL=https://vertex-school-oleu.vercel.app/api

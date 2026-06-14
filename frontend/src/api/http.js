@@ -1,20 +1,22 @@
 import axios from "axios";
 
-// Read VITE_API_URL and normalize to always end with /api
-function normalizeBaseUrl(raw) {
-  const fallback = "https://vertex-school.onrender.com/api";
-  const v = (raw || fallback).trim().replace(/\/+$/, ""); // remove trailing /
-  return v.endsWith("/api") ? v : `${v}/api`;
+const FALLBACK_API_URL = "https://vertex-school-oleu.vercel.app/api";
+
+export function normalizeBaseUrl(raw) {
+  const value = String(raw || FALLBACK_API_URL)
+    .trim()
+    .replace(/\/+$/, "");
+
+  return /\/api$/i.test(value) ? value : `${value}/api`;
 }
 
-const baseURL = normalizeBaseUrl(import.meta.env.VITE_API_URL);
+export const API_BASE_URL = normalizeBaseUrl(import.meta.env.VITE_API_URL);
 
 export const api = axios.create({
-  baseURL,
-  timeout: 30000,
+  baseURL: API_BASE_URL,
+  timeout: 30000
 });
 
-// Attach JWT token
 api.interceptors.request.use((config) => {
   const token =
     localStorage.getItem("vsm_token") || localStorage.getItem("token");

@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../api/http";
+
 const BRANDING_STORAGE_KEY = "vsm_branding";
 
 export function getStoredBranding() {
@@ -44,10 +46,7 @@ export function resolveBrandingAssetUrl(assetUrl) {
   if (!raw) return "";
   if (/^https?:\/\//i.test(raw)) return raw;
 
-  const apiBase = String(import.meta.env.VITE_API_URL || "").trim();
-  if (!apiBase) return raw;
-
-  const withoutApiSuffix = apiBase.replace(/\/api\/?$/i, "");
+  const withoutApiSuffix = API_BASE_URL.replace(/\/api\/?$/i, "");
   return `${withoutApiSuffix}${raw.startsWith("/") ? "" : "/"}${raw}`;
 }
 

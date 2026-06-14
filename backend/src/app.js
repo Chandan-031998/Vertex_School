@@ -12,7 +12,7 @@ const tenantResolver = require("./middleware/tenant");
 
 const app = express();
 
-// ✅ Read both env names (prevents mistakes on Render)
+// Read both supported CORS environment variable names.
 const originsRaw = String(
   env.CORS_ORIGIN ||
     process.env.CORS_ORIGIN ||

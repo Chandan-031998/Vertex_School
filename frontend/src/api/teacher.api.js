@@ -1,4 +1,4 @@
-import api from "./http";
+import api, { API_BASE_URL } from "./http";
 
 export async function teacherDashboard() {
   const { data } = await api.get("/teacher/dashboard");
@@ -42,7 +42,7 @@ export async function teacherAttendanceReport(params) {
 
 export function teacherAttendanceExportCsv(params) {
   const q = new URLSearchParams(params).toString();
-  return `${import.meta.env.VITE_API_URL}/teacher/attendance/report/export?${q}`;
+  return `${API_BASE_URL}/teacher/attendance/report/export?${q}`;
 }
 
 export async function listTeacherHomework(params = {}) {

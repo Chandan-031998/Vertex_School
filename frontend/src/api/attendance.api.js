@@ -1,4 +1,4 @@
-import api from "./http";
+import api, { API_BASE_URL } from "./http";
 export async function markAttendance(payload) {
   const { data } = await api.post("/attendance/mark", payload);
   return data;
@@ -21,5 +21,5 @@ export async function deleteAttendance(id) {
 }
 export function exportAttendanceCsv(params) {
   const q = new URLSearchParams(params).toString();
-  return `${import.meta.env.VITE_API_URL}/attendance/monthly/export?${q}`;
+  return `${API_BASE_URL}/attendance/monthly/export?${q}`;
 }
