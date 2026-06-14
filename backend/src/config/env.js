@@ -12,6 +12,7 @@ function required(name, fallback) {
 module.exports = {
   PORT: Number(process.env.PORT || 4000),
   CORS_ORIGIN: process.env.CORS_ORIGIN || "http://localhost:5173",
+  CORS_ORIGINS: process.env.CORS_ORIGINS || "",
   JWT_SECRET: required("JWT_SECRET", "replace_me"),
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "7d",
   DB_HOST: required("DB_HOST", "localhost"),

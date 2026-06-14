@@ -13,15 +13,15 @@ const tenantResolver = require("./middleware/tenant");
 const app = express();
 
 // Read both supported CORS environment variable names.
-const originsRaw = String(
-  env.CORS_ORIGIN ||
-    process.env.CORS_ORIGIN ||
-    env.CORS_ORIGINS ||
-    process.env.CORS_ORIGINS ||
-    ""
-);
-
-const configuredOrigins = originsRaw
+const configuredOrigins = [
+  env.CORS_ORIGIN,
+  process.env.CORS_ORIGIN,
+  env.CORS_ORIGINS,
+  process.env.CORS_ORIGINS,
+  "https://schoolerp.vertexsoftware.in",
+  "http://localhost:5173",
+]
+  .join(",")
   .split(",")
   .map((v) => v.trim())
   .filter(Boolean);

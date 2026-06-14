@@ -12,19 +12,33 @@ API base: `http://localhost:4000/api`
 
 ## Deployment (Vercel)
 
-### Vercel backend env
-Deploy the `backend` directory as a Vercel project. Configure these environment variables:
+Deploy the `backend` directory as a Vercel project. Vercel uses
+`api/[...path].js` as the Express serverless entrypoint when the project root is
+set to `backend`.
+
+### Project Settings
+
+```text
+Root Directory: backend
+Framework Preset: Other
+Install Command: npm install
+Build Command: echo "No build required"
+Output Directory: leave empty
+```
+
+### Environment Variables
+
 ```env
-CORS_ORIGIN=http://localhost:5173,https://vertex-school-d4z25y2ti-chandangirish95-5672s-projects.vercel.app,https://schoolerp.vertexsoftware.in,https://*.vercel.app,https://*.vertexsoftware.in
-JWT_SECRET=<strong-random-secret>
-JWT_EXPIRES_IN=7d
-DB_HOST=<mysql-host>
-DB_PORT=3306
-DB_USER=<db-user>
-DB_PASSWORD=<db-password>
-DB_NAME=<db-name>
+NODE_ENV=production
 DB_SYNC=false
-UPLOAD_DIR=uploads
+JWT_SECRET=your_long_random_secret
+JWT_EXPIRES_IN=7d
+DB_HOST=cpanel-sh117.webhostingservices.com
+DB_PORT=3306
+DB_USER=pixelfla_vertex_user
+DB_PASSWORD=your_db_password
+DB_NAME=pixelfla_school_erp
+CORS_ORIGIN=https://schoolerp.vertexsoftware.in,http://localhost:5173
 ```
 
 Backend URL:
@@ -34,9 +48,6 @@ Health checks:
 ```bash
 curl -s https://vertex-school-oleu.vercel.app/api/health
 ```
-
-Vercel uses `api/index.js` as the Express serverless entrypoint and `vercel.json`
-to route `/api/*` requests to that function.
 
 ## Migration Strategy
 Project supports `sequelize.sync()` in dev (`DB_SYNC=true`) and SQL migration scripts.
