@@ -134,7 +134,7 @@ export default function Admissions() {
           <Button variant="secondary" className="px-2 py-1 text-xs" onClick={() => onRemove(r.id)}>Delete</Button>
           {r.status === "PENDING" ? (
             <Input
-              className="w-44"
+              className="w-full sm:w-44"
               value={remarks[r.id] || ""}
               onChange={(e) => setRemarks((m) => ({ ...m, [r.id]: e.target.value }))}
               placeholder="Remarks"

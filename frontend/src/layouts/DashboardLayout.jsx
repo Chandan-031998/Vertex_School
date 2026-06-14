@@ -17,14 +17,14 @@ export default function DashboardLayout({ children }) {
           setMobileOpen={setMobileOpen}
         />
 
-        <div className="min-w-0 flex-1 bg-slate-50">
+        <div className="min-w-0 flex-1 overflow-x-hidden bg-slate-50">
           <Topbar setMobileOpen={setMobileOpen} />
 
           <motion.main
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="mx-auto w-full max-w-[1600px] p-4 sm:p-5 md:p-8"
+            className="mx-auto w-full max-w-[1600px] p-3 sm:p-5 md:p-8"
           >
             {children}
           </motion.main>

@@ -21,9 +21,9 @@ export default function Topbar({ setMobileOpen }) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/90 px-4 py-3 backdrop-blur-xl md:px-8">
+    <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/90 px-3 py-3 backdrop-blur-xl sm:px-4 md:px-8">
       <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           <button
             type="button"
             onClick={() => setMobileOpen?.(true)}
@@ -32,15 +32,15 @@ export default function Topbar({ setMobileOpen }) {
           >
             <Menu size={18} />
           </button>
-          <div>
-            <div className="text-sm font-bold text-slate-900">School Control Center</div>
+          <div className="min-w-0">
+            <div className="truncate text-sm font-bold text-slate-900">School Control Center</div>
             <div className="hidden text-xs text-slate-500 sm:block">
               Signed in as {user?.role}
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <button
             type="button"
             className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-800 transition-all duration-300 ease-in-out hover:bg-slate-100"
@@ -54,7 +54,7 @@ export default function Topbar({ setMobileOpen }) {
             <button
               type="button"
               onClick={() => setProfileOpen((v) => !v)}
-              className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-800 transition-all duration-300 ease-in-out hover:bg-slate-100"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-2 py-2 text-sm font-semibold text-slate-800 transition-all duration-300 ease-in-out hover:bg-slate-100 sm:px-3"
             >
               <span className="grid h-7 w-7 place-items-center rounded-full bg-indigo-100 text-xs font-bold text-indigo-600">
                 {(user?.full_name || "U").slice(0, 1).toUpperCase()}

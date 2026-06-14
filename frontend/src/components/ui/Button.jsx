@@ -1,6 +1,6 @@
 export default function Button({ className = "", variant = "primary", ...props }) {
   const base =
-    "inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-300 ease-in-out active:scale-[0.98]";
+    "inline-flex min-w-0 items-center justify-center rounded-xl px-4 py-2 text-center text-sm font-semibold leading-5 transition-all duration-300 ease-in-out active:scale-[0.98]";
   const styles =
     variant === "secondary"
       ? "bg-white border border-slate-300 text-slate-800 shadow-sm hover:bg-slate-100"

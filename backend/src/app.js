@@ -6,77 +6,48 @@ const rateLimit = require("express-rate-limit");
 const path = require("path");
 
 const env = require("./config/env");
-const routes = require("./routes");
 const errorHandler = require("./middleware/errorHandler");
-const tenantResolver = require("./middleware/tenant");
 
 const app = express();
 
-// Read both supported CORS environment variable names.
-const configuredOrigins = [
-  env.CORS_ORIGIN,
-  process.env.CORS_ORIGIN,
-  env.CORS_ORIGINS,
-  process.env.CORS_ORIGINS,
-  "https://schoolerp.vertexsoftware.in",
+const originsRaw = String(
+  env.CORS_ORIGIN ||
+    process.env.CORS_ORIGIN ||
+    env.CORS_ORIGINS ||
+    process.env.CORS_ORIGINS ||
+    ""
+);
+
+const defaultOrigins = [
   "http://localhost:5173",
+  "https://schoolerp.vertexsoftware.in",
+  "https://vertex-school-oleu.vercel.app",
+];
+
+const configuredOrigins = [
+  ...defaultOrigins,
+  ...originsRaw.split(","),
 ]
-  .join(",")
-  .split(",")
-  .map((v) => v.trim())
+  .map((v) => String(v).trim().replace(/\/+$/, ""))
   .filter(Boolean);
 
-function normalizeOrigin(value) {
-  return String(value || "").trim().replace(/\/+$/, "");
-}
-
-function wildcardToRegex(pattern) {
-  const escaped = pattern.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*");
-  return new RegExp(`^${escaped}$`);
-}
-
-function matchesConfiguredOrigin(origin) {
-  const normalizedOrigin = normalizeOrigin(origin);
-  return configuredOrigins.some((allowed) => {
-    const normalizedAllowed = normalizeOrigin(allowed);
-    if (!normalizedAllowed) return false;
-
-    if (normalizedAllowed === normalizedOrigin) return true;
-
-    // allow wildcard patterns like https://*.vertexsoftware.in
-    if (normalizedAllowed.includes("*")) {
-      return wildcardToRegex(normalizedAllowed).test(normalizedOrigin);
-    }
-
-    return false;
-  });
-}
-
 function isAllowedOrigin(origin) {
-  if (!origin) return true; // curl/postman/mobile apps
+  if (!origin) return true;
 
-  const normalized = normalizeOrigin(origin);
+  const normalized = String(origin).trim().replace(/\/+$/, "");
 
-  // ✅ Allow configured origins from env
-  if (matchesConfiguredOrigin(normalized)) return true;
+  if (configuredOrigins.includes(normalized)) return true;
 
-  // ✅ Allow your whole domain family (fixes your issue even if env is wrong)
-  try {
-    const host = new URL(normalized).hostname;
-    if (host === "vertexsoftware.in" || host.endsWith(".vertexsoftware.in")) return true;
-  } catch {}
-
-  // ✅ optional: allow Vercel preview domains
-  if (/^https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/.test(normalized)) return true;
+  if (/^https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/.test(normalized)) {
+    return true;
+  }
 
   return false;
 }
 
-// ✅ Use ONE corsOptions for both normal + preflight
 const corsOptions = {
   origin: (origin, cb) => {
     if (isAllowedOrigin(origin)) return cb(null, true);
-    // IMPORTANT: do NOT throw Error() here; it breaks preflight
     return cb(null, false);
   },
   credentials: true,
@@ -87,7 +58,6 @@ const corsOptions = {
 
 app.use(helmet());
 
-// ✅ CORS must be before routes
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
@@ -96,7 +66,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.use(rateLimit({ windowMs: 60 * 1000, max: 300 }));
-app.use(tenantResolver);
 
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.get("/api/health", (req, res) => res.json({ ok: true }));
@@ -104,7 +73,19 @@ app.get("/api/health", (req, res) => res.json({ ok: true }));
 // Serve uploads
 app.use("/uploads", express.static(path.join(process.cwd(), env.UPLOAD_DIR)));
 
-app.use("/api", routes);
+app.use((req, res, next) => {
+  const tenantResolver = require("./middleware/tenant");
+  return tenantResolver(req, res, next);
+});
+
+app.use("/api", (req, res, next) => {
+  try {
+    const routes = require("./routes");
+    return routes(req, res, next);
+  } catch (err) {
+    return next(err);
+  }
+});
 
 app.use(errorHandler);
 

@@ -11,7 +11,7 @@ function required(name, fallback) {
 
 module.exports = {
   PORT: Number(process.env.PORT || 4000),
-  CORS_ORIGIN: process.env.CORS_ORIGIN || "http://localhost:5173",
+  CORS_ORIGIN: process.env.CORS_ORIGIN || "",
   CORS_ORIGINS: process.env.CORS_ORIGINS || "",
   JWT_SECRET: required("JWT_SECRET", "replace_me"),
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "7d",
@@ -19,7 +19,7 @@ module.exports = {
   DB_PORT: Number(process.env.DB_PORT || 3306),
   DB_NAME: required("DB_NAME", "vertex_school_manager"),
   DB_USER: required("DB_USER", "root"),
-  DB_PASSWORD: required("DB_PASSWORD", ""),
+  DB_PASSWORD: process.env.DB_PASSWORD || "",
   DB_SYNC: String(process.env.DB_SYNC || "true") === "true",
   UPLOAD_DIR: process.env.UPLOAD_DIR || "uploads",
   SMTP: {

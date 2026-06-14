@@ -82,7 +82,7 @@ export default function SettingsClasses() {
       label: "Manage Sections",
       render: (r) => (
         <div className="flex items-center gap-2">
-          <Input className="w-24" value={newSection[r.id] || ""} onChange={(e) => setNewSection((p) => ({ ...p, [r.id]: e.target.value }))} placeholder="A" />
+          <Input className="w-full sm:w-24" value={newSection[r.id] || ""} onChange={(e) => setNewSection((p) => ({ ...p, [r.id]: e.target.value }))} placeholder="A" />
           <Button type="button" variant="secondary" className="px-2 py-1 text-xs" onClick={() => onAddSection(r.id)}>Add</Button>
         </div>
       )

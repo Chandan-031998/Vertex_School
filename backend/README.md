@@ -31,14 +31,14 @@ Output Directory: leave empty
 ```env
 NODE_ENV=production
 DB_SYNC=false
-JWT_SECRET=your_long_random_secret
+JWT_SECRET=your_long_secret
 JWT_EXPIRES_IN=7d
 DB_HOST=cpanel-sh117.webhostingservices.com
 DB_PORT=3306
 DB_USER=pixelfla_vertex_user
 DB_PASSWORD=your_db_password
 DB_NAME=pixelfla_school_erp
-CORS_ORIGIN=https://schoolerp.vertexsoftware.in,http://localhost:5173
+CORS_ORIGIN=http://localhost:5173,https://schoolerp.vertexsoftware.in,https://vertex-school-oleu.vercel.app
 ```
 
 Backend URL:
@@ -46,7 +46,27 @@ Backend URL:
 
 Health checks:
 ```bash
-curl -s https://vertex-school-oleu.vercel.app/api/health
+curl -i https://vertex-school-oleu.vercel.app/api/health
+```
+
+Local frontend CORS preflight test:
+```bash
+curl -i -X OPTIONS https://vertex-school-oleu.vercel.app/api/auth/login \
+  -H "Origin: http://localhost:5173" \
+  -H "Access-Control-Request-Method: POST" \
+  -H "Access-Control-Request-Headers: content-type,authorization"
+```
+
+Expected header:
+```text
+Access-Control-Allow-Origin: http://localhost:5173
+```
+
+Login test:
+```bash
+curl -X POST https://vertex-school-oleu.vercel.app/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@vertexschool.local","password":"Admin@12345"}'
 ```
 
 ## Migration Strategy

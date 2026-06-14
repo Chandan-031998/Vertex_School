@@ -33,7 +33,7 @@ export default function AdminParentsList() {
             <Button type="button" variant="secondary" className="px-2 py-1 text-xs" onClick={async () => { await deleteAdminParent(r.id); await load(); }}>Disable</Button>
           </div>
           <div className="flex gap-2">
-            <Input className="w-40" type="password" placeholder="New password" value={passwords[r.id] || ""} onChange={(e) => setPasswords((p) => ({ ...p, [r.id]: e.target.value }))} />
+            <Input className="w-full sm:w-40" type="password" placeholder="New password" value={passwords[r.id] || ""} onChange={(e) => setPasswords((p) => ({ ...p, [r.id]: e.target.value }))} />
             <Button type="button" variant="secondary" className="px-2 py-1 text-xs" onClick={async () => { if (!passwords[r.id]) return; await resetAdminParentPassword(r.id, { new_password: passwords[r.id] }); setPasswords((p) => ({ ...p, [r.id]: "" })); }}>Reset</Button>
           </div>
         </div>

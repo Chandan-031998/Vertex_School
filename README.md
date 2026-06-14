@@ -57,23 +57,31 @@ SPA rewrite file is included at:
 ### Backend (Vercel)
 Deploy the `backend` directory as a Vercel project and configure:
 ```env
-CORS_ORIGIN=http://localhost:5173,https://vertex-school-d4z25y2ti-chandangirish95-5672s-projects.vercel.app,https://schoolerp.vertexsoftware.in,https://*.vercel.app,https://*.vertexsoftware.in
+CORS_ORIGIN=http://localhost:5173,https://schoolerp.vertexsoftware.in,https://vertex-school-oleu.vercel.app
 DB_SYNC=false
 ```
 
 Backend URL:
 `https://vertex-school-oleu.vercel.app`
 
-The serverless entrypoint and routing configuration are:
-- `backend/api/index.js`
-- `backend/vercel.json`
+The serverless entrypoint is:
+- `backend/api/[...path].js`
 
 ### Production quick tests
 ```bash
-curl -s https://vertex-school-oleu.vercel.app/api/health
+curl -i https://vertex-school-oleu.vercel.app/api/health
+curl -i -X OPTIONS https://vertex-school-oleu.vercel.app/api/auth/login \
+  -H "Origin: http://localhost:5173" \
+  -H "Access-Control-Request-Method: POST" \
+  -H "Access-Control-Request-Headers: content-type,authorization"
 curl -X POST https://vertex-school-oleu.vercel.app/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@vertexschool.local","password":"Admin@12345"}'
+```
+
+Expected preflight header:
+```text
+Access-Control-Allow-Origin: http://localhost:5173
 ```
 
 ## Demo Logins (seed)
