@@ -7,6 +7,7 @@ const path = require("path");
 
 const env = require("./config/env");
 const errorHandler = require("./middleware/errorHandler");
+const routes = require("./routes");
 
 const app = express();
 
@@ -82,14 +83,7 @@ app.use((req, res, next) => {
   return tenantResolver(req, res, next);
 });
 
-app.use("/api", (req, res, next) => {
-  try {
-    const routes = require("./routes");
-    return routes(req, res, next);
-  } catch (err) {
-    return next(err);
-  }
-});
+app.use("/api", routes);
 
 app.use(errorHandler);
 

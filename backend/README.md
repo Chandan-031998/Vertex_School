@@ -13,8 +13,8 @@ API base: `http://localhost:4000/api`
 ## Deployment (Vercel)
 
 Deploy the `backend` directory as a Vercel project. Vercel uses
-`api/[...path].js` as the Express serverless entrypoint when the project root is
-set to `backend`.
+`api/index.js` as the single Express serverless entrypoint, with catch-all
+routes configured in `vercel.json`.
 
 ### Project Settings
 
@@ -64,7 +64,7 @@ Access-Control-Allow-Origin: http://localhost:5173
 
 Login test:
 ```bash
-curl -X POST https://vertex-school-oleu.vercel.app/api/auth/login \
+curl -i -X POST https://vertex-school-oleu.vercel.app/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@vertexschool.local","password":"Admin@12345"}'
 ```
