@@ -67,6 +67,8 @@ Backend URL:
 The serverless entrypoint is:
 - `backend/api/[...path].js`
 
+Vercel backend uses one catch-all function to avoid Hobby plan 12 function limit.
+
 ### Production quick tests
 ```bash
 curl -i https://vertex-school-oleu.vercel.app/api/health
